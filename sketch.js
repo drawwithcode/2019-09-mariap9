@@ -1,55 +1,93 @@
-
+var bottle
 var value = 0;
-var mtch;
+let ytide = 0.0;
 
-function preload() {
-  mtch = loadImage("./assets/matches.png");
+
+function preload(){
+  bottle = loadImage("assets/bottle.png");
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth,windowHeight);
+  imageMode(CENTER);
   angleMode(DEGREES);
-  noStroke();
-  frameRate(10);
-  setShakeThreshold(30);
+  rectMode(CENTER);
+  setShakeThreshold(20);
+
 
 }
 
 function draw() {
+  background(255);
 
-  fill(255, 190, 0, value);
-  ellipse((width / 2) - 3, (height / 2) - 55, 60, 100);
+  var call2 = "not the best trick, I know";
+  drawingContext.font = "normal 18px Alata";
+  drawingContext.textAlign = "center";
+  fill(220);
+  text(call2, (width / 2) - 15, (height / 2) + 250);
 
-  fill(255, 120, 0, value);
-  ellipse((width / 2) - 3, (height / 2) - 80, 90, 180);
 
-  image(mtch, (width / 2) - 15, (height / 2) - 50, mtch.width / 2, mtch.height / 2);
+  push();
+  fill(68-value, 252-value, 225, 255- (value/2));
+  translate(315,380);
+  noStroke();
+  beginShape();
+  let xtide = value;
+  for (let x = 0; x <= 290; x += 10){
+    let y = map(noise(xtide,ytide),0,1,450,500);
+    vertex(x,y);
+    xtide += 0.05;
+  }
+  ytide += 0.01;
+  vertex(260,800);
+  vertex(20,800);
+  endShape(CLOSE);
+  pop();
 
-  var call = "shake me";
-  drawingContext.font = "normal 15px Alata";
+  push();
+  image(bottle, width / 2, height / 2 + 150, bottle.width, bottle.height);
+  pop();
+
+  push();
+  noFill();
+  stroke(220);
+  strokeWeight(4);
+  ellipse((width/2)-15,(height/2)-360,130);
+  pop();
+
+  var call = "tap me";
+  drawingContext.font = "normal 21px Alata";
+  drawingContext.textAlign = "center";
+  fill(220);
+  text(call, (width / 2) - 15, (height / 2) - 350);
+
+
+  var call1 = "Wanna see a magic trick?";
+  drawingContext.font = "normal 34px Alata";
   drawingContext.textAlign = "center";
   fill(0);
-  text(call, (width / 2) - 15, (height / 2) - 220);
+  text(call1, (width / 2) - 15, (height / 2) - 500);
 
-  var call2 = "to light me up";
-  drawingContext.font = "normal 15px Alata";
-  drawingContext.textAlign = "center";
-  fill(0);
-  text(call2, (width / 2) - 15, (height / 2) - 195);
+
 }
 
-
 function deviceShaken() {
-  value++;
-  if (value > 255) {
+  value = value + 1;
+  if (value >= 500) {
     value = 0;
   }
 }
 
-function touchMoved() {
-  return false;
+
+function deviceMoved() {
+  value++
 }
+
 
 function touchEnded() {
   DeviceOrientationEvent.requestPermission();
+}
+
+function windowResized(){
+  resizeCanvas(windowWidth,windowHeight);
 }
